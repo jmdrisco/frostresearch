@@ -1,6 +1,6 @@
 from itertools import combinations
 import pandas as pd
-import numpy as np
+
 
 # generates all binary inputs
 def recursive(arr, mono, k):
@@ -116,9 +116,28 @@ def main():
     test_df.inputs = inputs
     test_df.outputs = data_out
     byOutput = test_df.groupby("outputs")["inputs"].apply(list)
-    print(byOutput)
+    # print(byOutput)
 
+    print("\nBad Monomial Ideals")
+    #ADD BAD ONES
     bad_outputs = []
+    if k == 3:
+        with open("nonunique outputs.txt", 'r') as reader:
+            line = reader.readline()
+            while line != "":
+                test = line.replace("\n", "")
+                test = test[1:len(test)-1]
+                test = test.split(",")
+                test = "+".join(test).replace("'", "").replace(" ", "").replace("]", "")
+                print(test.split("+"))
+                bad_outputs.append(test)
+                line = reader.readline()
+        bad_outputs.remove("")
+
+    elif k == 2:
+        bad_outputs = ['x1*x2']
+        print(bad_outputs)
+
     bad_inputs = []
     for bad in bad_outputs:
         for inp in byOutput[bad]:
@@ -128,7 +147,6 @@ def main():
             if vectors not in bad_inputs:
                 bad_inputs.append(vectors)
 
-    #print(inputs)
     vec_input = []
     for inp in inputs:
         vectors = []
@@ -137,9 +155,39 @@ def main():
         if vectors not in vec_input:
             vec_input.append(vectors)
 
-
     good_inputs = remove_bad_inputs(vec_input, bad_inputs)
-    print(good_inputs)
+    keepers = []
+    for i in range(len(inputs)):
+        just_inp = []
+        for x in inputs[i]:
+            just_inp.append(x[0])
+        if just_inp in good_inputs:
+            keepers.append(i)
+        # if just_inp not in good_inputs:
+        #     removers.append(i)
+
+    final_inputs = pd.Series(inputs).loc[keepers]
+    final_ideals = pd.Series(ideals).loc[keepers]
+
+    print("\nGood Monomial Ideals")
+    lst = []
+    for i in range(len(final_ideals)):
+        if sorted(final_ideals.values[i]) not in lst:
+            lst.append(sorted(final_ideals.values[i]))
+            print(sorted(final_ideals.values[i]))
+    # print(len(byOutput))
+
+    print("\nGood Inputs")
+    for good in good_inputs:
+        print(good)
+
+
+
+
+    print("\nGood Inputs + Monomials")
+    for i in list(final_ideals.index):
+        print(inputs[i], "-->", sorted(ideals[i]))
+
 
 
 if __name__ == '__main__':
