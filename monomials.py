@@ -1,5 +1,6 @@
 from itertools import combinations
-
+import pandas as pd
+import numpy as np
 
 # generates all binary inputs
 def recursive(arr, mono, k):
@@ -76,9 +77,15 @@ def find_differences(data_1, data_2):
     return monomial
 
 
+def remove_bad_inputs(all_inputs, bad_inputs):
+    for input in bad_inputs:
+        all_inputs.remove(input)
+    return all_inputs
+
+
 def main():
     # define k
-    k = 2
+    k = 3
     start = ""
     monomials = recursive([], start, k)
     outs = create_outputs(monomials)
@@ -89,9 +96,51 @@ def main():
     ideals = []
     for inp in inputs:
         ideals.append(create_mono(inp))
-    for i in range(len(ideals)):
-        print(inputs[i], "-->", ideals[i])
-    print(len(ideals))
+    # for i in range(len(ideals)):
+    #     print(inputs[i], "-->", ideals[i])
+    # print(len(ideals))
+
+
+    newIdeals = []
+    for idea in ideals:
+        new = sorted(idea)
+        # if new not in newIdeals:
+        #     print(new)
+        newIdeals.append(new)
+    #print(len(newIdeals))
+
+    data_out = []
+    for x in newIdeals:
+        data_out.append("+".join(x))
+    test_df = pd.DataFrame(columns=["inputs", "outputs"])
+    test_df.inputs = inputs
+    test_df.outputs = data_out
+    byOutput = test_df.groupby("outputs")["inputs"].apply(list)
+    print(byOutput)
+
+    bad_outputs = []
+    bad_inputs = []
+    for bad in bad_outputs:
+        for inp in byOutput[bad]:
+            vectors = []
+            for vec in inp:
+                vectors.append(vec[0])
+            if vectors not in bad_inputs:
+                bad_inputs.append(vectors)
+
+    #print(inputs)
+    vec_input = []
+    for inp in inputs:
+        vectors = []
+        for x in inp:
+            vectors.append(x[0])
+        if vectors not in vec_input:
+            vec_input.append(vectors)
+
+
+    good_inputs = remove_bad_inputs(vec_input, bad_inputs)
+    print(good_inputs)
+
 
 if __name__ == '__main__':
     main()
