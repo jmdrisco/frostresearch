@@ -10,6 +10,7 @@ python3 min_set_identifier.py (input file)
 The input file should be in the following format:
 <br/>
 the number of dimensions
+<br/>
 the binary index, of each number, you want to include
 
 <br/>
