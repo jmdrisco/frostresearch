@@ -6,6 +6,7 @@ To run min_set_identifier.py:
 
 python3 min_set_identifier.py (input file)
 
+
 The input file should be in the following format:
 
 the number of dimensions
