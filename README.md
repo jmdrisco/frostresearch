@@ -13,7 +13,7 @@ the number of dimensions
 <br/>
 the binary index, of each number, you want to include
 
-<br/>
+<br/><br/>
 For example:
 <br/>
 3
