@@ -1,9 +1,9 @@
 # frostresearch
 
 The main script in this folder is the min_set_identifier, which implements the algorithm that goes with the theorem proved.
-<br/>
-To run min_set_identifier.py:
 
+To run min_set_identifier.py:
+<br/>
 python3 min_set_identifier.py (input file)
 
 <br/>
