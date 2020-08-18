@@ -3,6 +3,7 @@
 The main script in this folder is the min_set_identifier, which implements the algorithm that goes with the theorem proved.
 
 To run min_set_identifier.py:
+
 python3 min_set_identifier.py <input file>
 
 The input file should be in the following format:
